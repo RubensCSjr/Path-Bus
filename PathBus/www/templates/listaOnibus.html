@@ -1,0 +1,13 @@
+<ion-view title="Lista de ônibus">
+	<ion-content>
+		<div  ng-repeat="onibus in lisBus.data">
+			<div class="list">
+				<a href="#" class="item item-icon-left">
+					<i class="icon ion-android-bus"></i>
+					{{onibus.nome}}
+					<span class="item-note ">{{onibus.numero}}</span>
+				</a>
+			</div>
+		</div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,23 @@
+<ion-view title="Entrar no PathBus">
+	<ion-content>
+		<div class="card">
+			<div class="list">
+				<label class="item item-input">
+					<input type="text" ng-model="usuario.nome" placeholder="Usuário">
+				</label>
+				<label class="item item-input">
+					<input type="text" ng-model="usuario.senha" placeholder="Senha">
+				</label>
+			</div>
+		</div>
+		<button class="button button-block button-balanced"ng-click="checkUsuario(usuario)">Entrar</button>
+		<div class="row">
+			<div class="col col-50">
+				<a href="#/recuperar"f class="button button-clear"><h6>recuperar_senha</h6></a>
+			</div>
+			<div class="col col-50">
+				<a href="#/criarConta"f class="button button-clear"><h6>criarconta</h6></a>
+			</div>
+		</div>
+  </ion-content>
+</ion-view>
