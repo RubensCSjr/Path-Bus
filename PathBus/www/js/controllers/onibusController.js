@@ -9,4 +9,4 @@ angular.module('starter.busCtrl',[])
   }).catch(function(response){
     console.log(response.error);
   })
-})
+});

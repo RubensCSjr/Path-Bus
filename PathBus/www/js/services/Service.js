@@ -1,7 +1,7 @@
-angular.module('starter.service',[])
+angular.module('starter.service',['ngCordova'])
 
 .factory('Geoloc', function($ionicPlatform, $cordovaGeolocation){
-  var posOpt = {timeout:10000, enableHighAccurayc: true}
+  var posOpt = {timeout:10000, enableHighAccurayc: true, maximumage:0}
   return{
      getLocal: function(){
       return $ionicPlatform.ready().then(function(){

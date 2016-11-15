@@ -1,4 +1,4 @@
-angular.module('starter')
+angular.module('starter.rout',[])
 
 .config(function($stateProvider, $urlRouterProvider){
   $urlRouterProvider.otherwise('home');
@@ -7,7 +7,11 @@ angular.module('starter')
     .state('home',{
       url:'/home',
       templateUrl:'templates/home.html',
-      controller:'MapaCtrl'
+      controller:'MapaCtrl',
+      cache: false,
+      onExit: function (UPDATE_LOCATION) {
+        UPDATE_LOCATION = false;
+      }
     })
     .state('criarConta',{
       url:'/criarConta',
