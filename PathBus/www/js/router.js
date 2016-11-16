@@ -9,9 +9,9 @@ angular.module('starter.rout',[])
       templateUrl:'templates/home.html',
       controller:'MapaCtrl',
       cache: false,
-      onExit: function (UPDATE_LOCATION) {
-        UPDATE_LOCATION = false;
-      }
+      // onExit: function (UPDATE_LOCATION) {
+      //   clearTimeUPDATE_LOCATION = false;
+      // }
     })
     .state('criarConta',{
       url:'/criarConta',

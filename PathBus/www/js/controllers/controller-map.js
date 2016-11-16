@@ -1,24 +1,27 @@
 angular.module('starter.control',['starter'])
 .value('LOCATION', {})
 .value('UPDATE_TIME', 5000)
-.value('UPDATE_LOCATION', true)
+// .value('UPDATE_LOCATION', true)
 .controller('MapaCtrl',function(
   Geoloc,
   $scope,
   $ionicLoading,
   $ionicPlatform,
-  $interval,
   LOCATION,
-  UPDATE_TIME,
-  UPDATE_LOCATION
+  UPDATE_TIME
+  // UPDATE_LOCATION
 ){
-    UPDATE_LOCATION = true;
+    // UPDATE_LOCATION = true;
     var configmap = false;
     var coords = {};
+    var lat_a = {}, lng_a = {};
+    var lat_b = {}, lng_b = {};
+    var lat_A = {}; lng_A = {};
+    var lat_B = {}; lng_B = {};
     // var speed = 31; //LOCATION.speed;
-    var firstLoc = {};
-    var lastLoc = {};
-    var latlngspeed = {lat: coords.latitude, lng: coords.longitude, spd: coords.speed};
+    // var firstLoc = {};
+    // var lastLoc = {};
+    // var latlngspeed = {lat: coords.latitude, lng: coords.longitude, spd: coords.speed};
 
     var confMap = function(map){
     if(configmap === false){
@@ -39,7 +42,7 @@ angular.module('starter.control',['starter'])
           'zoom': true
         },
         'camera': {
-          'latLng': {lat: coords.latitude*3/4, lng: coords.longitude*3/4},
+          'latLng': {lat: LOCATION.lat*3/4, lng: LOCATION.lng*3/4},
           'tilt': 0,
           'zoom': 1,
           'bearing': 0
@@ -49,11 +52,11 @@ angular.module('starter.control',['starter'])
         map.setVisible(true);
         // console.log(map.setVisible);
         configmap = true;
-        // console.info('linha 44: ', coords.latitude);
+        // console.info('linha 44: ', LOCATION.lat);
         $ionicLoading.hide();
-        // console.log('linha46', coords.longitude);
+        // console.log('linha46', LOCATION.lng);
         map.animateCamera({
-          target: {lat: coords.latitude, lng: coords.longitude},
+          target: {lat: LOCATION.lat, lng: LOCATION.lng},
           zoom: 16,
           tilt: 10,
           bearing: 0,
@@ -61,17 +64,17 @@ angular.module('starter.control',['starter'])
         }, function(){
           // marcadores para o ôinbus
         })
-        setTimeout(function () {
-          map.getCameraPosition(function(camera) {
-            var data = ["Current camera position:\n",
-            "latitude:" + camera.target.lat,
-            "longitude:" + camera.target.lng,
-            "zoom:" + camera.zoom,
-            "tilt:" + camera.tilt,
-            "bearing:" + camera.bearing].join("\n");
-            // console.warn(data);
-          });
-        }, 3000);
+        // setTimeout(function () {
+        //   map.getCameraPosition(function(camera) {
+        //     var data = ["Current camera position:\n",
+        //     "latitude:" + camera.target.lat,
+        //     "longitude:" + camera.target.lng,
+        //     "zoom:" + camera.zoom,
+        //     "tilt:" + camera.tilt,
+        //     "bearing:" + camera.bearing].join("\n");
+        //     // console.warn(data);
+        //   });
+        // }, 3000);
       }
     }
     $ionicLoading.show({
@@ -98,17 +101,37 @@ angular.module('starter.control',['starter'])
           spd: loc.coords.speed,
           tms: loc.timestamp
         };
-        if (UPDATE_LOCATION) setTimeout(updateLocation, UPDATE_TIME);
+          setTimeout(updateLocation, UPDATE_TIME);
         return LOCATION;
       })
       .catch(function(err){
         console.log(err);
       })
     }
-
-    setInterval(function () {
-        console.info('location:', JSON.stringify(LOCATION));
-    }, 2000);
+    if(LOCATION.spd > 25){
+    // if(26 > 25){
+      var INTERVAL =  setInterval(function () {
+          // console.info('linha 110', 'location:', JSON.stringify(LOCATION));
+          // lng_a = {};
+          // lat_a = {};
+          lat_b = LOCATION.lat;
+          lng_b = LOCATION.lng;
+          // console.log('linha 119 lat_b', lat_b);
+          lat_B = Math.abs(Math.round(lat_a) - Math.round(lat_b));
+          lng_B = Math.abs(Math.round(lng_a) - Math.round(lng_b));
+          // console.log('linha 123 lat_B', lat_B);
+          // console.log('linha 124 lng_B', lng_B);
+          if(lat_A != lat_B || lng_A != lng_B){
+            // envuar(ITERVAL);
+            console.log('linha 127','MUDOU DE LOCAL, O LOCAL ATUAL FOI ENVIADO', LOCATION);
+              lat_A = lat_B; lng_A = lng_B;
+          };
+          console.log('linha 129','NÃO HOUVE MUDANÇA NA POSIÇÃO!!!');
+          lat_a = lat_b; lng_a = lng_b;
+        }, 5000);
+    } else {
+      clearInterval(INTERVAL)
+    }
 
     // console.log('linha27', coords);
 });
