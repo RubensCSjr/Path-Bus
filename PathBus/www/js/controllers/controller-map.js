@@ -14,10 +14,11 @@ angular.module('starter.control',['starter'])
     // UPDATE_LOCATION = true;
     var configmap = false;
     var coords = {};
-    var lat_a = {}, lng_a = {};
-    var lat_b = {}, lng_b = {};
-    var lat_A = {}; lng_A = {};
-    var lat_B = {}; lng_B = {};
+    var t = 0, t_anterior = 0, t_atual = 0;
+    var lat_anterior = 0, lng_anterior = 0;
+    var lat_atual = 0, lng_atual = 0;
+    var lat_A = 0; lng_A = 0;
+    var lat_B = 0; lng_B = 0;
     // var speed = 31; //LOCATION.speed;
     // var firstLoc = {};
     // var lastLoc = {};
@@ -99,7 +100,8 @@ angular.module('starter.control',['starter'])
           lat: loc.coords.latitude,
           lng: loc.coords.longitude,
           spd: loc.coords.speed,
-          tms: loc.timestamp
+          tms: loc.timestamp,
+          vel: 0
         };
           setTimeout(updateLocation, UPDATE_TIME);
         return LOCATION;
@@ -108,26 +110,26 @@ angular.module('starter.control',['starter'])
         console.log(err);
       })
     }
-    if(LOCATION.spd > 25){
-    // if(26 > 25){
+    // if(LOCATION.spd > 25){
+    if(26 > 25){
       var INTERVAL =  setInterval(function () {
           // console.info('linha 110', 'location:', JSON.stringify(LOCATION));
-          // lng_a = {};
-          // lat_a = {};
-          lat_b = LOCATION.lat;
-          lng_b = LOCATION.lng;
-          // console.log('linha 119 lat_b', lat_b);
-          lat_B = Math.abs(Math.round(lat_a) - Math.round(lat_b));
-          lng_B = Math.abs(Math.round(lng_a) - Math.round(lng_b));
-          // console.log('linha 123 lat_B', lat_B);
-          // console.log('linha 124 lng_B', lng_B);
-          if(lat_A != lat_B || lng_A != lng_B){
-            // envuar(ITERVAL);
-            console.log('linha 127','MUDOU DE LOCAL, O LOCAL ATUAL FOI ENVIADO', LOCATION);
+          lat_atual = LOCATION.lat; lng_atual = LOCATION.lng; t_atual = LOCATION.tms;
+          // console.log('linha 116 lat_atual', lat_atual, 'lng_atual', lng_atual);
+          //Encontrando a distância percorrida entre um ponto e outro!
+          lat_B = Math.abs(Math.round(lat_anterior) - Math.round(lat_atual));
+          lng_B = Math.abs(Math.round(lng_anterior) - Math.round(lng_atual));
+          // console.log('linha 119', 'lat_B =', lat_B, 'lng_B =', lng_B);
+          if((lat_A != lat_B && lat_A != 0) || (lng_A != lng_B && lat_B != 0)){
+            t = Math.round(t_atual - t_anterior);
+            var s = lat_B + lng_B;
+            LOCATION.vel = s/t;
+            // enviar(ITERVAL);
+            console.log('linha 122','MUDOU DE LOCAL, O LOCAL ATUAL FOI ENVIADO', LOCATION);
               lat_A = lat_B; lng_A = lng_B;
           };
-          console.log('linha 129','NÃO HOUVE MUDANÇA NA POSIÇÃO!!!');
-          lat_a = lat_b; lng_a = lng_b;
+          // console.log('linha 125','NÃO HOUVE MUDANÇA NA POSIÇÃO!!!');
+          lat_anterior = lat_atual; lng_anterior = lng_atual; t_anterior = t_atual;
         }, 5000);
     } else {
       clearInterval(INTERVAL)
